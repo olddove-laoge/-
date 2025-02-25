@@ -33,6 +33,16 @@ pd.set_option('display.float_format', lambda x: '{:.3f}'.format(x))
 print("效用估计值：")
 print(utility_estimates)
 
+# 计算平均效用值
+average_utility = utility_estimates['Utility_Estimate'].mean()
+print(f"平均效用值为：{average_utility:.3f}")
+
+# 计算每个属性的平均效用值
+attribute_utility = utility_estimates.groupby(utility_estimates['Feature'].str.split('_').str[0])['Utility_Estimate'].mean().reset_index()
+attribute_utility.columns = ['Attribute', 'Average_Utility']
+print("每个属性的平均效用值：")
+print(attribute_utility)
+
 # 计算属性重要性
 attributes = [col.split('_')[0] for col in df_encoded.columns]
 importance = pd.Series(coefficients**2, index=df_encoded.columns)
